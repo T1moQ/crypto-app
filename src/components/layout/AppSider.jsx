@@ -1,5 +1,6 @@
 import { Layout, Card, Statistic, List, Typography } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 const data = [
    'Racing car sprays burning fuel into crowd.',
@@ -17,6 +18,25 @@ const AppSider = () => {
       padding: '10px',
       backgroundColor: '#1677ff',
    }
+
+   const options = {
+      method: 'GET',
+      url: 'https://openapiv1.coinstats.app/coins',
+      headers: {
+         accept: 'application/json',
+         'X-API-KEY': '42r9S30ZFqxPxK7h1dHi/bZSFmIE8VXs4a5oqgZAxI4='
+      }
+   };
+
+   axios
+      .request(options)
+      .then(function (response) {
+         console.log(response.data);
+      })
+      .catch(function (error) {
+         console.error(error);
+      })
+
    return (
       <>
          <Layout.Sider width="25%" style={siderStyle}>

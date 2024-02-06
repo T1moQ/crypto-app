@@ -1,4 +1,4 @@
-const jsonParseApi = JSON.parse(
+export const cryptoData = 
    {
   "result": [
     {
@@ -600,4 +600,18 @@ const jsonParseApi = JSON.parse(
     "hasNextPage": true
   }
 }
-)
+
+export const cryptoAsset = [
+  {
+    id: 'bitcoin',
+    amount: 0.075,
+    price: 42861,
+    date: new Date()
+  },
+  {
+    id: 'ethereum',
+    amount: 7,
+    price: 2309,
+    date: new Date()
+  }
+]
