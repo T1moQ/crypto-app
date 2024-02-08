@@ -1,78 +1,99 @@
-import { Layout, Card, Statistic, List, Typography } from 'antd';
+import { useEffect, useState } from 'react';
+import { Layout, Card, Statistic, List, Typography, Spin } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import { fakeFetchCrypto, fetchAssets } from '../../api'
 
-const data = [
-   'Racing car sprays burning fuel into crowd.',
-   'Japanese princess to wed commoner.',
-   'Australian walks 100km after outback crash.',
-   'Man charged over missing wedding girl.',
-   'Los Angeles battles huge wildfires.',
-];
+const percentDifferencr = (a, b) => {
+   return 100 * Math.abs((a - b) / ((a + b) / 2))
+}
+
+const siderStyle = {
+   textAlign: 'center',
+   lineHeight: '120px',
+   color: '#fff',
+   padding: '10px',
+   backgroundColor: '#1677ff',
+}
 
 const AppSider = () => {
-   const siderStyle = {
-      textAlign: 'center',
-      lineHeight: '120px',
-      color: '#fff',
-      padding: '10px',
-      backgroundColor: '#1677ff',
-   }
+   const [loading, setLoading] = useState(false)
+   const [crypto, setCrypto] = useState([])
+   const [assets, setAssets] = useState([])
 
-   const options = {
-      method: 'GET',
-      url: 'https://openapiv1.coinstats.app/coins',
-      headers: {
-         accept: 'application/json',
-         'X-API-KEY': '42r9S30ZFqxPxK7h1dHi/bZSFmIE8VXs4a5oqgZAxI4='
+   useEffect(() => {
+      async function preload() {
+         setLoading(true)
+         const { result } = await fakeFetchCrypto()
+         const assets = await fetchAssets()
+
+         setAssets(assets.map(asset => {
+            const coin = result.find((c) => c.id === asset.id)
+            return {
+               grow: asset.price < coin.price,
+               growPercent: percentDifferencr(asset.price, coin.price),
+               totalMount: asset.amount * coin.price,
+               totalProfit: (asset.amount * coin.price) - (asset.amount * asset.price),
+               ...asset
+            }
+         }))
+         setCrypto(result)
+         setLoading(false)
       }
-   };
+      preload()
+   }, [])
 
-   axios
-      .request(options)
-      .then(function (response) {
-         console.log(response.data);
-      })
-      .catch(function (error) {
-         console.error(error);
-      })
+   if (loading) {
+      return <Spin fullscreen />
+   }
 
    return (
       <>
          <Layout.Sider width="25%" style={siderStyle}>
-            <Card style={{ marginBottom: '1rem' }}>
-               <Statistic
-                  title="Active"
-                  value={11.28}
-                  precision={2}
-                  valueStyle={{ color: '#3f8600' }}
-                  prefix={<ArrowUpOutlined />}
-                  suffix="%"
-               />
-               <List
-                  size='small'
-                  bordered
-                  dataSource={data}
-                  renderItem={(item) => (
-                     <List.Item>
-                        <Typography.Text mark></Typography.Text> {item}
-                     </List.Item>
-                  )}
-               />
-            </Card>
-            <Card bordered={false}>
-               <Statistic
-                  title="Idle"
-                  value={9.3}
-                  precision={2}
-                  valueStyle={{ color: '#cf1322' }}
-                  prefix={<ArrowDownOutlined />}
-                  suffix="%"
-               />
-            </Card>
+            {assets.map(asset => {
+               return <>
+                  <Card key={asset.id} style={{ marginBottom: '1rem' }}>
+                     <Statistic
+                        title={asset.id}
+                        value={asset.totalAmount}
+                        precision={2}
+                        valueStyle={{ color: asset.grow ? '#3f8600' : '#cf1322' }}
+                        prefix={asset.grow ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+                        suffix="$"
+                     />
+                     <List
+                        size='small'
+                        bordered
+                        dataSource={[
+                           { title: 'Total Profit', value: asset.totalProfit },
+                           { title: 'Asset Amount', value: asset.amount },
+                           { title: 'Difference', value: asset.growPercent },
+                        ]}
+                        renderItem={(item) => (
+                           <List.Item>
+                              <span>{item.title}</span>
+                              <span>{item.value}</span>
+                           </List.Item>
+                        )}
+                     />
+                  </Card>
+                  {/* <Card bordered={false}>
+                     <Statistic
+                        title="Idle"
+                        value={9.3}
+                        precision={2}
+                        valueStyle={{ color: '#cf1322' }}
+                        prefix={<ArrowDownOutlined />}
+                        suffix="%"
+                     />
+                  </Card> */}
+               </>
+            })}
+
          </Layout.Sider>
       </>
    )
 }
 
 export default AppSider
+
+
