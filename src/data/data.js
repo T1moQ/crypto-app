@@ -604,14 +604,20 @@ export const cryptoData =
 export const cryptoAsset = [
   {
     id: 'bitcoin',
-    amount: 0.075,
+    amount: 0.0755,
     price: 42861,
     date: new Date()
   },
   {
     id: 'ethereum',
-    amount: 7,
+    amount: 17,
     price: 2309,
+    date: new Date()
+  },
+  {
+    id: 'avalanche-2',
+    amount: 23,
+    price: 34.94,
     date: new Date()
   }
 ]

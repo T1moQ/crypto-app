@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Layout, Card, Statistic, List, Typography, Spin } from 'antd';
+import { Layout, Card, Statistic, List, Typography, Spin, Tag } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { fakeFetchCrypto, fetchAssets } from '../../api'
-
-const percentDifferencr = (a, b) => {
-   return 100 * Math.abs((a - b) / ((a + b) / 2))
-}
+import { capitalizer } from '../../utils/utils';
+import { useContext } from 'react';
+import CryptoContext from '../../context/cryptoContext';
 
 const siderStyle = {
    textAlign: 'center',
@@ -16,32 +13,7 @@ const siderStyle = {
 }
 
 const AppSider = () => {
-   const [loading, setLoading] = useState(false)
-   const [crypto, setCrypto] = useState([])
-   const [assets, setAssets] = useState([])
-
-   useEffect(() => {
-      async function preload() {
-         setLoading(true)
-         const { result } = await fakeFetchCrypto()
-         const assets = await fetchAssets()
-
-         setAssets(assets.map(asset => {
-            const coin = result.find((c) => c.id === asset.id)
-            return {
-               grow: asset.price < coin.price,
-               growPercent: percentDifferencr(asset.price, coin.price),
-               totalMount: asset.amount * coin.price,
-               totalProfit: (asset.amount * coin.price) - (asset.amount * asset.price),
-               ...asset
-            }
-         }))
-         setCrypto(result)
-         setLoading(false)
-      }
-      preload()
-   }, [])
-
+   const { loading, assets } = useContext(CryptoContext)
    if (loading) {
       return <Spin fullscreen />
    }
@@ -53,7 +25,7 @@ const AppSider = () => {
                return <>
                   <Card key={asset.id} style={{ marginBottom: '1rem' }}>
                      <Statistic
-                        title={asset.id}
+                        title={capitalizer(asset.id)}
                         value={asset.totalAmount}
                         precision={2}
                         valueStyle={{ color: asset.grow ? '#3f8600' : '#cf1322' }}
@@ -64,32 +36,27 @@ const AppSider = () => {
                         size='small'
                         bordered
                         dataSource={[
-                           { title: 'Total Profit', value: asset.totalProfit },
-                           { title: 'Asset Amount', value: asset.amount },
-                           { title: 'Difference', value: asset.growPercent },
+                           { title: 'Total Profit', value: asset.totalProfit, hasATag: true },
+                           { title: 'Asset Amount', value: asset.amount, isPLain: true },
                         ]}
                         renderItem={(item) => (
                            <List.Item>
-                              <span>{item.title}</span>
-                              <span>{item.value}</span>
+                              <div>{item.title}</div>
+                              <span>
+                                 {item.hasATag && <Tag color={asset.grow ? 'green' : 'red'}>{asset.growPercent} %</Tag>}
+                                 {item.isPLain && item.value}
+                                 {!item.isPLain && (<Typography.Text type={asset.grow ? 'success' : 'danger'}>
+                                    $ {item.value.toFixed(2)}
+                                 </Typography.Text>
+                                 )}
+                              </span>
                            </List.Item>
                         )}
                      />
-                  </Card>
-                  {/* <Card bordered={false}>
-                     <Statistic
-                        title="Idle"
-                        value={9.3}
-                        precision={2}
-                        valueStyle={{ color: '#cf1322' }}
-                        prefix={<ArrowDownOutlined />}
-                        suffix="%"
-                     />
-                  </Card> */}
+                  </Card >
                </>
             })}
-
-         </Layout.Sider>
+         </Layout.Sider >
       </>
    )
 }
