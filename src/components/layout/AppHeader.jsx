@@ -1,9 +1,10 @@
-import { Layout, Select, Space, Button, Flex } from 'antd'
+import { Layout, Select, Space, Button, Flex, Modal } from 'antd'
 import { useCrypto } from '../../context/cryptoContext';
+import { useEffect, useState } from 'react';
 
-const handleChange = (value) => {
-   console.log(`selected ${value}`);
-};
+// const handleChange = (value) => {
+//    console.log(`selected ${value}`);
+// };
 
 // const options = [
 //    {
@@ -34,7 +35,25 @@ const handleChange = (value) => {
 
 
 const AppHeader = () => {
+   const [select, setSelect] = useState(false)
+   const [modal, setModal] = useState(false)
+   const [isModalOpen, setIsModalOpen] = useState(false)
    const { crypto } = useCrypto()
+
+   const selectHandler = (value) => {
+      console.log(value)
+      setModal(true)
+   }
+
+   useEffect(() => {
+      const keypress = (event) => {
+         if (event.key === '/') {
+            setSelect((prev) => !prev)
+         }
+      }
+      document.addEventListener('keypress', keypress)
+      return () => document.removeEventListener('keypress', keypress)
+   }, [])
 
    const headerStyle = {
       width: '100%',
@@ -55,8 +74,10 @@ const AppHeader = () => {
             <Flex gap="small" wrap="wrap">
                <Select
                   style={{ width: 250 }}
-                  value={'Press to open'}
-                  optionLabelProp="label"
+                  onSelect={selectHandler}
+                  onClick={() => setSelect((prev) => !prev)}
+                  open={select}
+                  value={'Press / to open'}
                   options={crypto.map((coin) => ({
                      label: coin.name,
                      value: coin.id,
@@ -70,6 +91,16 @@ const AppHeader = () => {
                   )}
                />
                <Button type="primary">Primary Button</Button>
+               <Modal title="Basic Modal"
+                  open={modal}
+                  onOk={() => setModal(false)}
+                  onCancel={() => setModal(false)}
+                  footer={null}
+               >
+                  <p>Some contents...</p>
+                  <p>Some contents...</p>
+                  <p>Some contents...</p>
+               </Modal>
             </Flex>
          </Layout.Header>
       </div>
