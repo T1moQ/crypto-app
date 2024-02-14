@@ -1,47 +1,18 @@
-import { Layout, Select, Space, Button, Flex, Modal } from 'antd'
+import { Layout, Select, Space, Button, Flex, Modal, Drawer } from 'antd'
 import { useCrypto } from '../../context/cryptoContext';
 import { useEffect, useState } from 'react';
-
-// const handleChange = (value) => {
-//    console.log(`selected ${value}`);
-// };
-
-// const options = [
-//    {
-//       label: 'China',
-//       value: 'china',
-//       emoji: '🇨🇳',
-//       desc: 'China (中国)',
-//    },
-//    {
-//       label: 'USA',
-//       value: 'usa',
-//       emoji: '🇺🇸',
-//       desc: 'USA (美国)',
-//    },
-//    {
-//       label: 'Japan',
-//       value: 'japan',
-//       emoji: '🇯🇵',
-//       desc: 'Japan (日本)',
-//    },
-//    {
-//       label: 'Korea',
-//       value: 'korea',
-//       emoji: '🇰🇷',
-//       desc: 'Korea (韩国)',
-//    },
-// ]
-
+import CoinInfoAsset from '../CoinInfoAsset';
+import AddAssetForm from '../AddAssetForm';
 
 const AppHeader = () => {
    const [select, setSelect] = useState(false)
    const [modal, setModal] = useState(false)
-   const [isModalOpen, setIsModalOpen] = useState(false)
+   const [coin, setCoin] = useState(null)
+   const [drawer, setDrawer] = useState(false)
    const { crypto } = useCrypto()
 
    const selectHandler = (value) => {
-      console.log(value)
+      setCoin(crypto.find((c) => c.id === value))
       setModal(true)
    }
 
@@ -90,17 +61,21 @@ const AppHeader = () => {
                      </Space>
                   )}
                />
-               <Button type="primary">Primary Button</Button>
-               <Modal title="Basic Modal"
+               <Button
+                  type="primary"
+                  onClick={() => setDrawer(true)}
+               >Add Asset</Button>
+               <Modal
                   open={modal}
                   onOk={() => setModal(false)}
                   onCancel={() => setModal(false)}
                   footer={null}
                >
-                  <p>Some contents...</p>
-                  <p>Some contents...</p>
-                  <p>Some contents...</p>
+                  <CoinInfoAsset coin={coin} />
                </Modal>
+               <Drawer title="Add Asset" onClose={() => setDrawer(false)} open={drawer}>
+                  <AddAssetForm />
+               </Drawer>
             </Flex>
          </Layout.Header>
       </div>
