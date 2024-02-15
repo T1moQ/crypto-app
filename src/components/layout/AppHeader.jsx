@@ -8,7 +8,7 @@ const AppHeader = () => {
    const [select, setSelect] = useState(false)
    const [modal, setModal] = useState(false)
    const [coin, setCoin] = useState(null)
-   const [drawer, setDrawer] = useState(false)
+   const [drawer, setDrawer] = useState(true)
    const { crypto } = useCrypto()
 
    const selectHandler = (value) => {
@@ -73,7 +73,11 @@ const AppHeader = () => {
                >
                   <CoinInfoAsset coin={coin} />
                </Modal>
-               <Drawer title="Add Asset" onClose={() => setDrawer(false)} open={drawer}>
+               <Drawer
+                  title="Add Asset"
+                  onClose={() => setDrawer(false)}
+                  open={drawer}
+                  destroyOnClose>
                   <AddAssetForm />
                </Drawer>
             </Flex>
