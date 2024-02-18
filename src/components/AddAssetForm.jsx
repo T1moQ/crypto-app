@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { Select, Space, Typography, Flex, Divider, Form, Button, InputNumber, DatePicker, Result } from 'antd'
+import { Select, Space, Divider, Form, Button, InputNumber, DatePicker, Result } from 'antd'
 import { useCrypto } from "../context/cryptoContext"
+import CoinInfo from "./CoinInfo"
 
 const AddAssetForm = ({ onClose }) => {
    const [form] = Form.useForm()
@@ -89,12 +90,7 @@ const AddAssetForm = ({ onClose }) => {
          onFinish={onFinish}
          validateMessages={validateMessages}
       >
-         <Flex align='center'>
-            <img src={coin.icon} style={{ width: '40px', marginRight: '10px' }} />
-            <Typography.Title level={2} style={{ margin: 0 }}>
-               {coin.name}
-            </Typography.Title>
-         </Flex>
+         <CoinInfo coin={coin} />
          <Divider />
 
          <Form.Item
