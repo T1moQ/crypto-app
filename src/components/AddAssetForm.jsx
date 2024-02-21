@@ -17,8 +17,7 @@ const AddAssetForm = ({ onClose }) => {
          extra={[
             <Button type="primary" key="console" onClick={onClose}>
                Go Console
-            </Button>,
-            <Button key="buy">Buy Again</Button>,
+            </Button>
          ]}
       />
    }

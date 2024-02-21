@@ -6,12 +6,6 @@ const CoinInfoAsset = (props) => {
    return (
       <>
          <CoinInfo coin={coin} withSymbol />
-         {/* <Flex align='center'>
-            <img src={coin.icon} style={{ width: '40px', marginRight: '10px' }} />
-            <Typography.Title level={2} style={{ margin: 0 }}>
-               ({coin.symbol}) {coin.name}
-            </Typography.Title>
-         </Flex> */}
          <Divider />
          <Typography.Paragraph>
             <Typography.Text strong>1 Hour: </Typography.Text>
