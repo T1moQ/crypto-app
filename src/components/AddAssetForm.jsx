@@ -1,19 +1,20 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Select, Space, Divider, Form, Button, InputNumber, DatePicker, Result } from 'antd'
 import { useCrypto } from "../context/cryptoContext"
 import CoinInfo from "./CoinInfo"
 
 const AddAssetForm = ({ onClose }) => {
    const [form] = Form.useForm()
-   const { crypto } = useCrypto()
+   const { crypto, addAsset } = useCrypto()
    const [coin, setCoin] = useState(null)
    const [submited, setSubmited] = useState(false)
+   const assetRef = useRef()
 
    if (submited) {
-      <Result
+      return <Result
          status="success"
          title="New Asset Added"
-         subTitle={`Add ${1} of ${coin.name} bu price ${10}`}
+         subTitle={`Add ${assetRef.current.amount} of ${coin.name} by price ${assetRef.current.price}`}
          extra={[
             <Button type="primary" key="console" onClick={onClose}>
                Go Console
@@ -45,7 +46,15 @@ const AddAssetForm = ({ onClose }) => {
 
    const onFinish = (value) => {
       console.log(value)
+      const newAsset = {
+         id: coin.id,
+         amount: value.amount,
+         price: value.price,
+         date: value.date?.$d ?? new Date,
+      }
+      assetRef.current = newAsset
       setSubmited(true)
+      addAsset(newAsset)
    }
 
    const validateMessages = {
