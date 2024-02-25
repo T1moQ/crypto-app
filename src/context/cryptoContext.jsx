@@ -15,7 +15,7 @@ const mapAssets = (assets, result) => {
          grow: asset.price < coin.price,
          growPercent: percentDifferencr(asset.price, coin.price),
          totalMount: asset.amount * coin.price,
-         totalProfit: (asset.amount * coin.price) - (asset.amount * asset.price),
+         totalProfit: asset.amount * coin.price - asset.amount * asset.price,
          name: coin.name,
          ...asset
       }
