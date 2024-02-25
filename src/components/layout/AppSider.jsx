@@ -23,7 +23,7 @@ const AppSider = () => {
                   <Card style={{ marginBottom: '1rem' }}>
                      <Statistic
                         title={capitalizer(asset.id)}
-                        value={asset.totalAmount}
+                        value={asset.totalMount}
                         precision={2}
                         valueStyle={{ color: asset.grow ? '#3f8600' : '#cf1322' }}
                         prefix={asset.grow ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
