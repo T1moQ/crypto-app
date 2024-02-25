@@ -1,5 +1,7 @@
-import { Layout, Typography } from 'antd';
+import { Layout, Typography, Flex } from 'antd';
 import { useCrypto } from '../../context/cryptoContext'
+import PortfolioChart from '../PortfolioChart';
+import AssetTable from '../AssetTable';
 
 const AppContent = () => {
    const contentStyle = {
@@ -20,6 +22,8 @@ const AppContent = () => {
                }).reduce((acc, value) => (acc += value), 0)
                   .toFixed(2)}
             </Typography.Title>
+            <PortfolioChart />
+            <AssetTable />
          </Layout.Content>
       </>
    )
