@@ -19,8 +19,8 @@ const AppSider = () => {
       <>
          <Layout.Sider width="25%" style={siderStyle}>
             {assets.map(asset => {
-               return <>
-                  <Card key={asset.id} style={{ marginBottom: '1rem' }}>
+               return <div key={asset.id}>
+                  <Card style={{ marginBottom: '1rem' }}>
                      <Statistic
                         title={capitalizer(asset.id)}
                         value={asset.totalAmount}
@@ -51,7 +51,7 @@ const AppSider = () => {
                         )}
                      />
                   </Card >
-               </>
+               </div>
             })}
          </Layout.Sider >
       </>
