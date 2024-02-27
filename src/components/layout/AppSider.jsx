@@ -35,7 +35,6 @@ const AppSider = () => {
                         dataSource={[
                            { title: 'Total Profit', value: asset.totalProfit, hasATag: true },
                            { title: 'Asset Amount', value: asset.amount, isPLain: true },
-                           { title: 'Difference', value: asset.growPercent, isPLain: true },
                         ]}
                         renderItem={(item) => (
                            <List.Item>
