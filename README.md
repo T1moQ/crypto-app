@@ -1,8 +1,14 @@
-# React + Vite
+## Hello everyone and welcome to the repository of The Crypto app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### This repo contains a project suggested by [Vladilen Minin`s](https://github.com/vladilenm) course of React. Crypto app is web site that allows users to track the crypto portfolio, check profits and stuff like that. 
 
-Currently, two official plugins are available:
+### *Key Technologies*
+* **React JS**
+* **React Context**
+* **Ant Design Components**
+* **Charts Library (react-chartjs-2)**
+* **Vite**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#
+
+### [Demo](https://t1moq.github.io/crypto-app/)
